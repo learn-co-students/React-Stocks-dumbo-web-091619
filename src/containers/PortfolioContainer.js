@@ -13,10 +13,10 @@ class PortfolioContainer extends Component {
               return <div>
 
               <div className="card">
-                <div className="card-body">
+                <div className="card-body"  onClick={() => this.props.sellStock(stock)} >
                   <h5 className="card-title">{stock.name}</h5>
                   <p className="card-text">{stock.ticker}:{stock.price}</p>
-                  <button onClick={() => this.props.sellStock(stock)} >sell me</button>
+                 
               </div>
             </div>
             </div>

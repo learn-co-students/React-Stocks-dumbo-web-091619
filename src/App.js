@@ -20,11 +20,13 @@ class App extends Component {
   }
 
    buyStock = (stockToBuy) => {
-     debugger
-    const addStockArr = this.state.boughtStocks.filter(stock => stock.id !== stockToBuy.id)
-     this.setState({
-       boughtStocks: [...addStockArr, stockToBuy]
-     })
+     
+    const findStock = this.state.boughtStocks.find(stock => stock.id === stockToBuy.id)
+    if (!findStock) {
+      this.setState({
+        boughtStocks: [...this.state.boughtStocks, stockToBuy]
+      })
+    }
    } 
 
   componentDidMount(){
