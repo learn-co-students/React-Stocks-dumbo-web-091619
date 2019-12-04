@@ -7,7 +7,9 @@ class MainContainer extends Component {
 
   state= {
     stocks: [],
-    portfolioStocks: []
+    portfolioStocks: [],
+    filterTerm: 'All',
+    sortTerm: ''
 
   }
 
@@ -23,36 +25,84 @@ class MainContainer extends Component {
 
   }
 
-  addPortfolio = (stock) => {
-    this.setState({
-      portfolioStocks: [...this.state.portfolioStocks, stock]
+
+addPortfolio = (stock) => {
+  this.setState((previousState) => {
+    return { portfolioStocks: [...previousState.portfolioStocks, stock]
+    }
+  })
+}
+
+removeStock = (stock) => {
+   this.setState((previousState) => {
+     return { portfolioStocks: [...previousState.portfolioStocks.filter(s => s !== stock)] }
+   })
+}
+
+setFilterTerm = (term) => {
+  this.setState({
+    filterTerm: term
+  })
+  
+}
+
+setSortTerm = (term) => {
+  this.setState({
+    sortTerm: term
+  })
+}
+
+
+filterStocks = () => {
+  let copiedStocks = [...this.state.stocks]
+  if (this.state.filterTerm === "All") {
+    copiedStocks = [...this.state.stocks] 
+  }
+    else {
+      copiedStocks = this.state.stocks.filter(stock => stock.type === this.state.filterTerm)
+  }
+
+  if (this.state.sortTerm === 'Price') {
+    copiedStocks.sort((stockA, stockB) => {
+      return stockA.price - stockB.price 
+    })
+  } else if (this.state.sortTerm === 'Alphabetically') {
+    copiedStocks.sort((stockA, stockB) => {
+      return stockA.name.localeCompare(stockB.name)
     })
   }
 
-  removeStock = (stock) => {
-    this.setState({
-      portfolioStocks: this.state.portfolioStocks.filter(s => s !== stock) 
-    })
-  }
-  
-  
-  
+  return copiedStocks
+}
+
+
+
+
   
   render() {
-    console.log(this.state.stocks)
+    // console.log('MAIN CONTAINER', this.state)
     return (
       <div>
-        <SearchBar/>
+        <SearchBar 
+         setFilterTerm={this.setFilterTerm} 
+         term={this.state.filterTerm} 
+         setSortTerm={this.setSortTerm}
+         sortTerm={this.state.sortTerm}
+         />
 
           <div className="row">
             <div className="col-8">
 
-              <StockContainer stocks={this.state.stocks} addPortfolio={this.addPortfolio}/>
+              <StockContainer 
+              stocks={this.filterStocks()} 
+              addPortfolio={this.addPortfolio}
+              />
 
             </div>
             <div className="col-4">
-
-              <PortfolioContainer stocks={this.state.portfolioStocks} removeStock={this.removeStock}/>
+              <PortfolioContainer 
+                stocks={this.state.portfolioStocks} 
+                removeStock={this.removeStock}/>
 
             </div>
           </div>
