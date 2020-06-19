@@ -1,11 +1,11 @@
 import React from 'react'
 // import { prependOnceListener } from 'cluster';
 
-const Stock = (props) => {
+const PortfolioStock = (props) => {
 
-  let handleClick = (e) =>{
-    props.addToPortfolio(props.stock)
-  }
+const handleClick = (e) => {
+    props.removeFromPortfolio(props.stock)
+}
 
 return (
   <div>
@@ -24,4 +24,4 @@ return (
   </div>)
 };
 
-export default Stock
+export default PortfolioStock
